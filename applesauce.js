@@ -1,16 +1,34 @@
-const BLACKLIST_WORDS = ["bacon", "meatball"];
+const BLACKLIST_WORDS = ["bacon", "meatball", "tenderloin"];
 
 const $textElement = document.querySelector(".parent");
-function applesauce() {
-    let $textNodes = [];
 
-    for (let i = 0; i < $textElement.childNodes.length; i++) {
-        const currentChildNode = $textElement.childNodes[i];
+function getAllTextNodes($node) {
+    if (
+        $node === null ||
+        $node.childNodes.length === 0
+    ) return [];
 
-        if (currentChildNode.nodeName === "#text") {
-            $textNodes.push(currentChildNode);
+    let textNodes = [];
+
+    for (let i = 0; i < $node.childNodes.length; i++) {
+        const $currentNode = $node.childNodes[i];
+
+        if (isTextNode($currentNode)) {
+            textNodes.push($currentNode);
+        } else {
+            textNodes = textNodes.concat(getAllTextNodes($currentNode));
         }
     }
+
+    return textNodes;
+}
+
+function isTextNode($node) {
+    return $node.nodeName === "#text";
+}
+
+function applesauce() {
+    const $textNodes = getAllTextNodes($textElement);
 
     if ($textNodes.length === 0) {
         return;
