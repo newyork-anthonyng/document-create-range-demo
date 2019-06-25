@@ -3,24 +3,15 @@ const BLACKLIST_WORDS = ["bacon", "meatball", "tenderloin"];
 const $textElement = document.querySelector(".parent");
 
 function getAllTextNodes($node) {
-    if (
-        $node === null ||
-        $node.childNodes.length === 0
-    ) return [];
+    const result = [];
+    const walk = document.createTreeWalker($node, NodeFilter.SHOW_TEXT, null, false);
 
-    let textNodes = [];
-
-    for (let i = 0; i < $node.childNodes.length; i++) {
-        const $currentNode = $node.childNodes[i];
-
-        if (isTextNode($currentNode)) {
-            textNodes.push($currentNode);
-        } else {
-            textNodes = textNodes.concat(getAllTextNodes($currentNode));
-        }
+    let currentNode;
+    while(currentNode = walk.nextNode()) {
+        result.push(currentNode);
     }
 
-    return textNodes;
+    return result;
 }
 
 function isTextNode($node) {
