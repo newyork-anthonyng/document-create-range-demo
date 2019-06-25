@@ -2,22 +2,21 @@ const BLACKLIST_WORDS = ["bacon", "meatball"];
 
 const $textElement = document.querySelector(".parent");
 function applesauce() {
-    let $textNode;
+    let $textNodes = [];
 
     for (let i = 0; i < $textElement.childNodes.length; i++) {
         const currentChildNode = $textElement.childNodes[i];
 
         if (currentChildNode.nodeName === "#text") {
-            $textNode = currentChildNode;
-            break;
+            $textNodes.push(currentChildNode);
         }
     }
 
-    if ($textNode === undefined) {
+    if ($textNodes.length === 0) {
         return;
     }
 
-    highlightTextForNode($textNode);
+    $textNodes.forEach(highlightTextForNode);
 }
 
 function highlightTextForNode($node) {
